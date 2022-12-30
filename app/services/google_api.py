@@ -4,22 +4,21 @@ from typing import List
 from aiogoogle import Aiogoogle
 
 from app.core.config import settings
-
-FORMAT = "%Y/%m/%d %H:%M:%S"
+from app.services import constants as const
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
-    now_date_time = datetime.now().strftime(FORMAT)
+    now_date_time = datetime.now().strftime(const.FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
     spreadsheets_body = {
         'properties': {'title': f'QRKot_Отчет на {now_date_time}',
-                       'locale': 'ru_RU'},
+                       'locale': const.LOCALE},
         'sheets': [{
             'properties': {'sheetType': 'GRID',
-                           'sheetId': 0,
-                           'title': 'Скорость закрытия',
-                           'gridProperties': {'rowCount': 100,
-                                              'columnCount': 11}
+                           'sheetId': const.SHEET_ID,
+                           'title': const.TABLE_NAME,
+                           'gridProperties': {'rowCount': const.ROW_COUNT,
+                                              'columnCount': const.COL_COUNT}
                            }
         }]
     }
@@ -54,7 +53,7 @@ async def spreadsheets_update_value(
     projects: List,
     wrapper_services: Aiogoogle
 ) -> None:
-    now_date_time = datetime.now().strftime(FORMAT)
+    now_date_time = datetime.now().strftime(const.FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
     table_values = [
         ['Отчет от', now_date_time],
