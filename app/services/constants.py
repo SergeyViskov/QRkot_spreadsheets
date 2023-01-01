@@ -1,10 +1,7 @@
-from datetime import datetime
-
-
 FORMAT = "%Y/%m/%d %H:%M:%S"
-NOW_DATE_TIME = datetime.now().strftime(FORMAT)
+SPREADSHEET_TITLE = 'QRKot_Отчет на {now}'
 SPREADSHEETS_BODY = {
-    'properties': {'title': f'QRKot_Отчет на {NOW_DATE_TIME}',
+    'properties': {'title': 'spreadsheet title',
                    'locale': 'ru_RU'},
     'sheets': [{
         'properties': {'sheetType': 'GRID',

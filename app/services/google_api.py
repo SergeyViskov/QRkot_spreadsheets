@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from aiogoogle import Aiogoogle
@@ -9,6 +10,10 @@ from app.services import constants as const
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     service = await wrapper_services.discover('sheets', 'v4')
     spreadsheets_body = const.SPREADSHEETS_BODY
+    spreadsheets_body['properties']['title'] = (
+        const.SPREADSHEET_TITLE.format(
+            now=datetime.now().strftime(const.FORMAT))
+    )
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheets_body)
     )
@@ -40,9 +45,10 @@ async def spreadsheets_update_value(
     projects: List,
     wrapper_services: Aiogoogle
 ) -> None:
+    now_date_time = datetime.now().strftime(const.FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
     table_values = [
-        ['Отчет от', const.NOW_DATE_TIME],
+        ['Отчет от', now_date_time],
         ['Топ проектов по скорости закрытия'],
         ['Название проекта', 'Время сбора', 'Описание']
     ]
